@@ -14,6 +14,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Categoria, Produto
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages  # <-- IMPORTANTE
 
 class CategoriaListView(LoginRequiredMixin, ListView):
     model = Categoria
@@ -35,3 +36,23 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView):
     fields = ['nome', 'preco', 'categoria']
     success_url = reverse_lazy('produto_list')
     template_name = 'form.html'
+   
+class ProdutoUpdateView(UpdateView):
+    model = Produto
+    fields = ['nome','preco', 'categoria']  # Altere conforme seu modelo
+    template_name = 'form.html'
+    success_url = reverse_lazy('produto_list')  # Altere para onde redirecionar após salvar
+
+
+class ProdutoDeleteView(LoginRequiredMixin, DeleteView):
+    model = Produto
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('produto_list')
+
+    # Este método é chamado quando o usuário confirma a exclusão
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()  # pega o produto que será deletado
+        messages.success(request, f'Produto "{obj.nome}" foi excluído com sucesso.')  # adiciona a mensagem
+        return super().delete(request, *args, **kwargs)  # continua com o processo normal de exclusão
+
+

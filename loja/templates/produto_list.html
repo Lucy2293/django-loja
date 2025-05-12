@@ -3,10 +3,22 @@
 {% block content %}
 <h2>Produtos</h2>
 <a href="{% url 'produto_create' %}" class="btn btn-primary mb-3">Novo Produto</a>
+
+<div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>
       <th>#</th>
+      <th>Ações</th>
       <th>Nome</th>
       <th>Preço</th>
       <th>Categoria</th>
@@ -16,6 +28,10 @@
     {% for produto in object_list %}
       <tr>
         <td>{{ forloop.counter }}</td>
+        <td>
+          <a href="{% url 'produto_edit' produto.id %}">Editar</a>
+          <a href="{% url 'produto_delete' produto.id %}">Deletar</a>
+         </td>
         <td>{{ produto.nome }}</td>
         <td>R$ {{ produto.preco }}</td>
         <td>{{ produto.categoria.nome }}</td>
