@@ -55,4 +55,14 @@ class ProdutoDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(request, f'Produto "{obj.nome}" foi excluído com sucesso.')  # adiciona a mensagem
         return super().delete(request, *args, **kwargs)  # continua com o processo normal de exclusão
 
+class CategoriaUpdateView(LoginRequiredMixin, UpdateView):
+    model = Categoria
+    fields = ['nome']
+    success_url = reverse_lazy('categoria_list')
+    template_name = 'form.html'  # reutilizando o mesmo template da criação
+
+class CategoriaDeleteView(LoginRequiredMixin, DeleteView):
+    model = Categoria
+    success_url = reverse_lazy('categoria_list')
+    template_name = 'confirm_delete.html'  # você vai criar esse template
 

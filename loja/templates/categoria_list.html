@@ -7,6 +7,7 @@
   <thead>
     <tr>
       <th>#</th>
+      <th>Ações</th>
       <th>Nome</th>
     </tr>
   </thead>
@@ -14,6 +15,10 @@
     {% for categoria in object_list %}
       <tr>
         <td>{{ forloop.counter }}</td>
+        <td>
+          <a href="{% url 'categoria_edit' categoria.pk %}">Editar</a>
+          <a href="{% url 'categoria_delete' categoria.pk %}">Deletar</a>
+        </td>
         <td>{{ categoria.nome }}</td>
       </tr>
     {% empty %}
